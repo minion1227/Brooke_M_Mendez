@@ -1,0 +1,83 @@
+---
+import { profile, navLinks } from '../data/profile';
+import Icon from './Icon.astro';
+
+// First name only — a compact wordmark reads better than the full name here.
+const mark = profile.name.split(' ')[0];
+---
+
+{/* Mobile and tablet only. From lg up the sidebar owns nav and the theme toggle. */}
+<header
+  class="sticky top-0 z-40 border-b border-[var(--rule)] bg-[var(--surface)]/85 backdrop-blur-md lg:hidden"
+>
+  <div class="mx-auto flex max-w-[96rem] items-center justify-between px-6 py-3.5 sm:px-8">
+    <a
+      href="#top"
+      class="text-sm font-semibold tracking-tight transition-opacity hover:opacity-70"
+    >
+      {mark}<span class="text-[var(--accent)]">.</span>
+    </a>
+
+    <div class="flex items-center gap-1">
+      <button
+        type="button"
+        data-theme-toggle
+        class="rounded-md p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--text)]"
+        aria-label="Toggle dark mode"
+      >
+        <Icon name="sun" class="hidden h-[18px] w-[18px] dark:block" />
+        <Icon name="moon" class="h-[18px] w-[18px] dark:hidden" />
+      </button>
+
+      <button
+        id="menu-toggle"
+        type="button"
+        class="rounded-md p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--text)]"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <Icon name="menu" class="h-[18px] w-[18px]" />
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    aria-label="Sections"
+    hidden
+    class="mx-auto max-w-[96rem] border-t border-[var(--border)] px-6 py-3 sm:px-8"
+  >
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="block rounded-md px-2 py-2.5 text-sm text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--text)]"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<script>
+  const menuButton = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  menuButton?.addEventListener('click', () => {
+    const open = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!open));
+    menuButton.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+    if (mobileNav) mobileNav.hidden = open;
+  });
+
+  // Tapping a link should close the menu, not leave it covering the target.
+  mobileNav?.querySelectorAll('a').forEach((link) =>
+    link.addEventListener('click', () => {
+      mobileNav.hidden = true;
+      menuButton?.setAttribute('aria-expanded', 'false');
+      menuButton?.setAttribute('aria-label', 'Open menu');
+    })
+  );
+</script>

@@ -1,0 +1,65 @@
+---
+import { skills, certifications } from '../data/profile';
+import Section from './Section.astro';
+import Icon from './Icon.astro';
+---
+
+<Section id="skills" title="Skills">
+  <dl class="space-y-8">
+    {
+      skills.map((group) => (
+        <div class="sm:grid sm:grid-cols-[9rem_1fr] sm:gap-8">
+          <dt class="label mb-3 text-[var(--text-muted)] sm:mb-0 sm:pt-2">
+            {group.category}
+          </dt>
+          <dd>
+            <ul class="flex flex-wrap gap-1.5">
+              {group.items.map((item) => (
+                <li class="rounded-full border border-[var(--border)] bg-[var(--surface-raised)] px-3 py-1.5 text-[13px]">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  {
+    certifications.length > 0 && (
+      <div class="mt-14 border-t border-[var(--border)] pt-10">
+        <h3 class="label mb-6 text-[var(--text-muted)]">
+          Certifications
+        </h3>
+        <ul class="space-y-4">
+          {certifications.map((cert) => (
+            <li class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <div>
+                <p class="text-[15px] font-medium">
+                  {cert.href ? (
+                    <a
+                      href={cert.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-0.5 transition-colors hover:text-[var(--accent)]"
+                    >
+                      {cert.name}
+                      <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+                    </a>
+                  ) : (
+                    cert.name
+                  )}
+                </p>
+                <p class="text-sm text-[var(--text-muted)]">{cert.issuer}</p>
+              </div>
+              {cert.date && (
+                <span class="font-mono text-xs text-[var(--text-muted)]">{cert.date}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</Section>

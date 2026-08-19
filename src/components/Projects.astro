@@ -1,0 +1,124 @@
+---
+import { projects } from '../data/profile';
+import Section from './Section.astro';
+import Icon from './Icon.astro';
+
+// Featured first, otherwise keep the authored order.
+const ordered = [...projects].sort(
+  (a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured))
+);
+---
+
+<Section
+  id="projects"
+  title="Projects"
+  lede="Storefronts I've built and improved, with the results they moved."
+>
+  <div class="grid gap-4">
+    {
+      ordered.map((project) => {
+        const href = project.href ?? project.links?.[0]?.href;
+        return (
+          <article class="card group flex flex-col rounded-xl p-6">
+            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h3 class="display text-2xl">{project.name}</h3>
+              <span class="font-mono text-xs text-[var(--text-muted)]">
+                {[project.context, project.year].filter(Boolean).join(' · ')}
+              </span>
+            </div>
+
+            {/* Text and thumbnail sit side by side; the shot is supporting
+                evidence for the description, not the headline of the card. */}
+            <div class="mt-3 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
+              <div class="min-w-0 flex-1">
+                <p class="text-[15px] leading-relaxed">{project.blurb}</p>
+
+                {project.description && (
+                  <p class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                    {project.description}
+                  </p>
+                )}
+              </div>
+
+              {/* Fixed 4:3 frame. Left to their natural heights the thumbnails
+                  drifted out of step, because auto-trimming dead space at capture
+                  time leaves each screenshot a different aspect ratio.
+                  object-top keeps each storefront's header and hero in view. */}
+              {project.image && (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Visit ${project.name}`}
+                  class="block aspect-[4/3] shrink-0 overflow-hidden rounded-lg border border-[var(--border)] transition-colors hover:border-[var(--accent)] sm:w-52 lg:w-60"
+                >
+                  <img
+                    src={project.image}
+                    alt={`Screenshot of the ${project.name} storefront`}
+                    width="1000"
+                    height="750"
+                    loading="lazy"
+                    decoding="async"
+                    class="block h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
+                </a>
+              )}
+            </div>
+
+            {project.metrics && project.metrics.length > 0 && (
+              <dl
+                class:list={[
+                  'mt-6 grid grid-cols-2 gap-4 border-t border-[var(--border)] pt-5',
+                  project.metrics.length >= 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2',
+                ]}
+              >
+                {project.metrics.map((metric) => (
+                  <div class="sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-[var(--border)] sm:[&:not(:first-child)]:pl-5">
+                    <dt class="sr-only">{metric.label}</dt>
+                    <dd>
+                      {/* Serif numerals: the figures are the point of the card,
+                          and Cormorant gives them presence a UI sans can't. */}
+                      <span class="display block text-3xl text-[var(--accent)] tabular-nums">
+                        {metric.value}
+                      </span>
+                      <span class="mt-1.5 block text-xs leading-snug text-[var(--text-muted)]">
+                        {metric.label}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+
+            {project.tags && project.tags.length > 0 && (
+              <ul class="mt-6 flex flex-wrap gap-1.5">
+                {project.tags.map((tag) => (
+                  <li class="rounded-full border border-[var(--border)] px-2.5 py-1 font-mono text-[11px] text-[var(--text-muted)]">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {project.links && project.links.length > 0 && (
+              /* mt-auto pins links to the card bottom so uneven cards stay aligned. */
+              <div class="mt-auto flex flex-wrap gap-4 pt-6">
+                {project.links.map((link) => (
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link-sweep inline-flex items-center gap-1 text-sm font-medium text-[var(--accent)]"
+                  >
+                    {link.label}
+                    <Icon name="arrow-up-right" class="h-3.5 w-3.5" />
+                  </a>
+                ))}
+              </div>
+            )}
+          </article>
+        );
+      })
+    }
+  </div>
+</Section>

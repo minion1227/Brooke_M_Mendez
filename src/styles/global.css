@@ -1,0 +1,402 @@
+@import 'tailwindcss';
+
+/* Dark mode is driven by a `class="dark"` on <html>, set by the theme toggle. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Self-hosted, latin subset only. See scripts/fetch-fonts.mjs. */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/cormorant-600-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/jost-400-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/jost-500-latin.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Jost';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/jost-600-latin.woff2') format('woff2');
+}
+
+@theme {
+  /* Jost — a geometric sans with the proportions fashion and beauty houses set
+     their wordmarks in. Warmer and less institutional than a UI grotesque. */
+  --font-sans:
+    'Jost', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  /* Cormorant Garamond — high stroke contrast, editorial. Used only at display
+     sizes, where that contrast reads as refinement rather than fragility. */
+  --font-display: 'Cormorant Garamond', ui-serif, Georgia, 'Times New Roman', serif;
+  /* Monospace stays for technical tags. The tension between an editorial serif
+     and a machine face is the point: this is a designer's eye on an engineer's
+     resume, and dropping the mono would erase half of that. */
+  --font-mono:
+    ui-monospace, 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas,
+    monospace;
+
+  /* Neutral ramp, warmed toward the accent rather than a straight grey. Pure
+     grey next to a bronze accent reads as cold and unconsidered. */
+  --color-ink-50: #fbf9f6;
+  --color-ink-100: #f3efe9;
+  --color-ink-200: #e6e0d7;
+  --color-ink-300: #cdc4b7;
+  --color-ink-400: #9d9387;
+  --color-ink-500: #746b60;
+  --color-ink-600: #574f46;
+  --color-ink-700: #3f3931;
+  --color-ink-800: #2a2621;
+  --color-ink-900: #1c1916;
+  --color-ink-950: #141110;
+
+  /* Champagne bronze. Deliberately not rose gold or blush — those read as a
+     feminine template. A metallic warm neutral reads as luxury on its own terms
+     and, unlike pink, stays legible as a link colour in both themes. */
+  --color-accent-300: #dcc19a;
+  --color-accent-400: #cba77a;
+  --color-accent-500: #a8814f;
+  --color-accent-600: #8a6a43;
+  --color-accent-700: #6d5334;
+}
+
+:root {
+  --surface: var(--color-ink-50);
+  --surface-raised: #ffffff;
+  /* Quiet hairlines: card edges, tag pills, the timeline rail. */
+  --border: var(--color-ink-200);
+  /* Structural dividers between major sections. Deliberately a step stronger --
+     at --border they were nearly invisible against the ground, so one section
+     ran into the next with no readable break. */
+  --rule: var(--color-ink-300);
+  --text: var(--color-ink-900);
+  --text-muted: var(--color-ink-500);
+  --accent: var(--color-accent-600);
+  /* A hairline of the accent at low opacity — used where a rule should feel
+     gilded rather than merely drawn. */
+  --accent-hairline: color-mix(in oklab, var(--color-accent-600) 38%, transparent);
+  color-scheme: light;
+}
+
+.dark {
+  --surface: var(--color-ink-950);
+  --surface-raised: var(--color-ink-900);
+  --border: var(--color-ink-800);
+  --rule: var(--color-ink-700);
+  --text: var(--color-ink-100);
+  --text-muted: var(--color-ink-400);
+  --accent: var(--color-accent-400);
+  --accent-hairline: color-mix(in oklab, var(--color-accent-400) 42%, transparent);
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor targets so sticky header doesn't cover section headings. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--surface);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Display type. Cormorant's contrast only reads correctly large — below about
+     28px the thin strokes disappear, so this is never used for body copy. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+
+  /* Small caps label: the couture-label convention — wide tracking, small size,
+     high placement. Carries hierarchy without needing weight or size. */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+
+  /* A gilded hairline that fades out, rather than a flat full-width border. */
+  .rule-gilded {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--accent-hairline),
+      var(--rule) 22%,
+      var(--rule) 78%,
+      transparent
+    );
+  }
+
+  /* The page shell is wide so grids and cards can use the screen, but running
+     text still needs a line length the eye can track. Anything that is read as
+     prose rather than scanned gets this cap. */
+  .measure {
+    max-width: 74ch;
+  }
+
+  /* The sticky sidebar can still scroll when a short viewport can't fit it, but
+     its scrollbar sat right beside the page's own — two rails, one of them
+     meaningless. Wheel, trackpad, and keyboard scrolling all still work. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Sections fade up as they enter the viewport; disabled under reduced motion
+     and for anyone without JS (the observer adds `.is-visible`). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* No JS? Never leave content invisible. */
+.no-js .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Materiality
+   Depth, texture and motion. Everything below is additive: it introduces new
+   tokens and classes rather than overriding the palette above.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Warm light falling from the upper left, and a cooler bounce from the right.
+     A flat fill reads as a screen; two soft washes read as a lit surface. */
+  --wash-1: color-mix(in oklab, var(--color-accent-600) 9%, transparent);
+  --wash-2: color-mix(in oklab, var(--color-ink-300) 26%, transparent);
+  --grain-opacity: 0.05;
+
+  /* Two-part shadows: a tight contact shadow to seat the card, and a wide soft
+     one for the ambient falloff. A single blur reads as a drop shadow sticker. */
+  --shadow-soft:
+    0 1px 2px rgba(62, 51, 38, 0.05), 0 10px 28px -14px rgba(62, 51, 38, 0.14);
+  --shadow-lift:
+    0 2px 5px rgba(62, 51, 38, 0.06), 0 26px 52px -20px rgba(62, 51, 38, 0.22);
+
+  /* A whisper of warmth down the top of each card, like light on a paper edge. */
+  --card-sheen: color-mix(in oklab, var(--color-accent-600) 4%, transparent);
+  --portrait-glow: color-mix(in oklab, var(--color-accent-600) 34%, transparent);
+}
+
+.dark {
+  --wash-1: color-mix(in oklab, var(--color-accent-500) 13%, transparent);
+  --wash-2: color-mix(in oklab, var(--color-ink-800) 55%, transparent);
+  /* Grain is more visible on a dark ground, so it needs less of it. */
+  --grain-opacity: 0.038;
+
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -16px rgba(0, 0, 0, 0.65);
+  --shadow-lift: 0 2px 6px rgba(0, 0, 0, 0.45), 0 30px 60px -22px rgba(0, 0, 0, 0.8);
+
+  --card-sheen: rgba(255, 255, 255, 0.035);
+  --portrait-glow: color-mix(in oklab, var(--color-accent-400) 30%, transparent);
+}
+
+@layer base {
+  /* Both layers are fixed and sit at z-index -1, which paints them above the
+     body's background but below every element in the flow — so the page has
+     depth without anything overlaying the content. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(115% 75% at 10% -12%, var(--wash-1) 0%, transparent 62%),
+      radial-gradient(85% 55% at 102% 2%, var(--wash-2) 0%, transparent 58%);
+  }
+
+  /* Fine film grain. At these opacities it is never consciously visible — it
+     just stops large flat areas from looking like unprinted screen. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer components {
+  /* Raised panel. */
+  .card {
+    background-color: var(--surface-raised);
+    background-image: linear-gradient(180deg, var(--card-sheen), transparent 45%);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+    transition:
+      box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.45s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--accent-hairline);
+  }
+
+  /* Underline that draws in from the left on hover and retracts to the right,
+     rather than blinking on. */
+  .link-sweep {
+    position: relative;
+  }
+
+  .link-sweep::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: -3px;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-sweep:hover::after,
+  .link-sweep:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .portrait {
+    box-shadow:
+      0 0 0 1px var(--accent-hairline),
+      0 20px 55px -20px var(--portrait-glow);
+  }
+
+  /* Entrance choreography for the sidebar: elements arrive in reading order
+     instead of the whole panel appearing at once. */
+  .stagger > * {
+    opacity: 0;
+    animation: rise 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.14s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.23s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.32s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.41s; }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Reading progress, hairline thin, gilded. */
+  .scroll-progress {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 60;
+    height: 2px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background-image: linear-gradient(
+      to right,
+      var(--color-accent-600),
+      var(--color-accent-400)
+    );
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger > * {
+    opacity: 1;
+    animation: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .scroll-progress {
+    display: none;
+  }
+}
+
+/* Without JS the stagger never runs, so its elements would stay invisible. */
+.no-js .stagger > * {
+  opacity: 1;
+  animation: none;
+}

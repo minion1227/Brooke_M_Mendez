@@ -1,0 +1,185 @@
+---
+import { profile, socials, navLinks } from '../data/profile';
+import { resumeHref, avatarHref } from '../lib/assets';
+import Icon from './Icon.astro';
+---
+
+{/*
+  On large screens this pins to the viewport while the content column scrolls,
+  so identity stays visible and the wide layout has something to hold the left
+  half. Below lg it collapses into a normal stacked hero.
+*/}
+<aside
+  id="top"
+  class="no-scrollbar lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[30%] lg:max-w-[26rem] lg:shrink-0 lg:flex-col lg:justify-between lg:overflow-y-auto lg:py-12"
+>
+  <div class="stagger">
+    <div class="flex items-center gap-5 sm:gap-6 lg:block">
+      {
+        avatarHref && (
+          <img
+            src={avatarHref}
+            alt={`Portrait of ${profile.name}`}
+            width="720"
+            height="720"
+            loading="eager"
+            fetchpriority="high"
+            class="h-24 w-24 shrink-0 portrait rounded-full object-cover sm:h-28 sm:w-28 lg:mr-auto lg:mb-8 lg:ml-14 lg:block lg:h-52 lg:w-52"
+          />
+        )
+      }
+
+      <div class="min-w-0">
+        {/* Steps back down at lg — the 30% column is too narrow for 5xl. */}
+        <h1 class="display text-4xl text-balance sm:text-5xl lg:text-[2.75rem]">
+          {profile.name}
+        </h1>
+
+        <p class="mt-3 text-[15px] leading-snug text-balance text-[var(--text-muted)]">
+          {profile.headline}
+        </p>
+      </div>
+    </div>
+
+    <p class="measure mt-6 text-[15px] leading-relaxed lg:mt-7 lg:text-sm">
+      {profile.tagline}
+    </p>
+
+    {/* Section nav lives here on desktop; the mobile header owns it below lg. */}
+    {/*
+      Each row is a fixed height so the active item can grow in size without
+      pushing its neighbours down the list as you scroll.
+    */}
+    <nav aria-label="Section" class="mt-10 hidden lg:block">
+      <ul>
+        {
+          navLinks.map((link) => (
+            <li class="flex h-9 items-center">
+              <a
+                href={link.href}
+                data-nav-link={link.href.replace('#', '')}
+                class="text-sm text-[var(--text-muted)] transition-all duration-200 hover:text-[var(--text)]"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="mt-9 lg:mt-10">
+    <div class="flex flex-wrap items-center gap-3">
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-2 rounded-full bg-[var(--text)] px-5 py-2.5 text-sm font-medium text-[var(--surface)] transition-opacity hover:opacity-85"
+      >
+        Get in touch
+      </a>
+
+      {
+        resumeHref && (
+          <a
+            href={resumeHref}
+            download
+            class="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-5 py-2.5 text-sm font-medium transition-colors hover:bg-[var(--surface-raised)]"
+          >
+            <Icon name="download" class="h-4 w-4" />
+            Resume
+          </a>
+        )
+      }
+    </div>
+
+    <div class="mt-5 flex items-center gap-1">
+      {
+        socials.map((social) => (
+          <a
+            href={social.href}
+            target={social.href.startsWith('mailto:') ? undefined : '_blank'}
+            rel="noopener noreferrer"
+            aria-label={social.label}
+            class="rounded-md p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--text)]"
+          >
+            <Icon name={social.icon} class="h-[18px] w-[18px]" />
+          </a>
+        ))
+      }
+
+      {/* Desktop theme control. The mobile header carries its own. */}
+      <button
+        type="button"
+        data-theme-toggle
+        class="hidden rounded-md p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--text)] lg:inline-flex"
+        aria-label="Toggle dark mode"
+      >
+        <Icon name="sun" class="hidden h-[18px] w-[18px] dark:block" />
+        <Icon name="moon" class="h-[18px] w-[18px] dark:hidden" />
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  // Highlight the section currently in view.
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]');
+  if (links.length) {
+    const sections = Array.from(links)
+      .map((link) => document.getElementById(link.dataset.navLink!))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    // The active section reads larger and brighter. Size alone would not be
+    // enough on its own, so weight and colour carry it too.
+    const setActive = (id: string | null) => {
+      links.forEach((link) => {
+        const on = link.dataset.navLink === id;
+        link.classList.toggle('text-base', on);
+        link.classList.toggle('font-semibold', on);
+        link.classList.toggle('text-[var(--text)]', on);
+        link.classList.toggle('text-sm', !on);
+        link.classList.toggle('text-[var(--text-muted)]', !on);
+        if (on) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    const update = () => {
+      // The last section whose top has crossed the reading line wins.
+      const line = window.innerHeight * 0.3;
+      let current = sections[0]?.id ?? null;
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= line) current = section.id;
+      }
+
+      // The rule above can never select the final section: the page runs out of
+      // scroll before that section's top reaches the line, so it stayed stuck on
+      // the second-to-last entry no matter how far you scrolled. Once the page
+      // is scrolled to the end, the last section is by definition what you're
+      // looking at.
+      const scrolled = Math.ceil(window.innerHeight + window.scrollY);
+      if (scrolled >= document.documentElement.scrollHeight - 2) {
+        current = sections[sections.length - 1]?.id ?? current;
+      }
+
+      setActive(current);
+    };
+
+    // A scroll listener rather than an IntersectionObserver: the observer only
+    // fires while a section crosses its band, so near the bottom of the page it
+    // could stop firing entirely and leave the highlight stale.
+    let queued = false;
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        update();
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+</script>

@@ -1,0 +1,15 @@
+---
+import { profile } from '../data/profile';
+
+// Build-time stamp, so the year is correct without shipping any JS.
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-[var(--rule)]">
+  <div
+    class="mx-auto flex max-w-[96rem] flex-wrap items-center justify-between gap-3 px-6 py-8 text-xs text-[var(--text-muted)] sm:px-8 lg:px-10 2xl:px-16"
+  >
+    <p>© {year} {profile.name}</p>
+    <a href="#top" class="transition-colors hover:text-[var(--text)]">Back to top ↑</a>
+  </div>
+</footer>

@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Projects from '../components/Projects.astro';
+import Skills from '../components/Skills.astro';
+import Education from '../components/Education.astro';
+import Contact from '../components/Contact.astro';
+import {
+  profile,
+  socials,
+  about,
+  experience,
+  projects,
+  skills,
+  education,
+} from '../data/profile';
+import { avatarHref } from '../lib/assets';
+
+// Person schema helps search engines and LinkedIn/Slack unfurls read the page.
+const roles = experience.filter((e) => e.variant !== 'break');
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.headline,
+  description: profile.seoDescription,
+  email: `mailto:${profile.email}`,
+  telephone: profile.phone ?? undefined,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: profile.address.street,
+    addressLocality: profile.address.locality,
+    addressRegion: profile.address.region,
+    postalCode: profile.address.postalCode,
+    addressCountry: profile.address.country,
+  },
+  url: Astro.site?.href,
+  image: avatarHref ? new URL(avatarHref, Astro.site ?? Astro.url.origin).href : undefined,
+  sameAs: socials.filter((s) => !s.href.startsWith('mailto:')).map((s) => s.href),
+  knowsAbout: skills.flatMap((g) => g.items),
+  alumniOf: education.map((e) => ({ '@type': 'EducationalOrganization', name: e.school })),
+  worksFor: roles
+    .filter((e) => e.end.toLowerCase() === 'present')
+    .map((e) => ({ '@type': 'Organization', name: e.company })),
+};
+---
+
+<Base>
+  {about.length > 0 && <About />}
+  {experience.length > 0 && <Experience />}
+  {projects.length > 0 && <Projects />}
+  {skills.length > 0 && <Skills />}
+  {education.length > 0 && <Education />}
+  <Contact />
+
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(personSchema)}
+  />
+</Base>

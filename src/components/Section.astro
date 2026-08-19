@@ -1,0 +1,38 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  lede?: string;
+  class?: string;
+}
+
+const { id, title, lede, class: className = '' } = Astro.props;
+---
+
+{/*
+  Sections are separated by a rule rather than by large empty gaps — at desktop
+  width, generous padding alone reads as the page having lost its footing.
+*/}
+<section
+  id={id}
+  class={`scroll-mt-20 border-t border-[var(--rule)] py-14 first:border-t-0 first:pt-0 lg:py-16 ${className}`}
+>
+  <div class="reveal">
+    <header class="mb-7 lg:mb-9">
+      {/* Serif title over a short gilded rule — the rule gives the heading a
+          base to sit on, so it reads as a masthead rather than floating text. */}
+      <h2 class="display text-3xl text-[var(--text)] sm:text-4xl">
+        {title}
+      </h2>
+      <div class="rule-gilded mt-4 max-w-[7rem]"></div>
+      {
+        lede && (
+          <p class="measure mt-5 text-[15px] leading-relaxed text-[var(--text-muted)]">
+            {lede}
+          </p>
+        )
+      }
+    </header>
+    <slot />
+  </div>
+</section>

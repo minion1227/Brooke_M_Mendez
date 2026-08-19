@@ -1,0 +1,41 @@
+---
+import { education } from '../data/profile';
+import Section from './Section.astro';
+---
+
+<Section id="education" title="Education">
+  <ul class="space-y-8">
+    {
+      education.map((entry) => (
+        <li class="border-l border-[var(--border)] pl-6 sm:pl-8">
+          {(entry.start || entry.end) && (
+            <p class="font-mono text-xs tracking-wide text-[var(--text-muted)]">
+              {[entry.start, entry.end].filter(Boolean).join(' — ')}
+            </p>
+          )}
+
+          <h3 class="display mt-2 text-2xl">{entry.school}</h3>
+
+          <p class="mt-0.5 text-sm text-[var(--text-muted)]">
+            {[entry.degree, entry.field].filter(Boolean).join(', ')}
+            {entry.location && <span> · {entry.location}</span>}
+          </p>
+
+          {entry.details && entry.details.length > 0 && (
+            <ul class="measure mt-4 space-y-2">
+              {entry.details.map((detail) => (
+                <li class="relative pl-5 text-[15px] leading-relaxed text-[var(--text-muted)]">
+                  <span
+                    aria-hidden="true"
+                    class="absolute top-[0.65em] left-0 h-1 w-1 rounded-full bg-[var(--text-muted)]"
+                  />
+                  {detail}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</Section>

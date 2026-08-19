@@ -1,0 +1,16 @@
+---
+import { about } from '../data/profile';
+import Section from './Section.astro';
+---
+
+<Section id="about" title="About">
+  <div class="measure space-y-5">
+    {
+      about.map((paragraph) => (
+        <p class="text-[15px] leading-relaxed text-[var(--text-muted)] sm:text-base xl:text-[17px]">
+          {paragraph}
+        </p>
+      ))
+    }
+  </div>
+</Section>
