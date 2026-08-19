@@ -1,76 +1,89 @@
 # Portfolio — Brooke A. Mendez
 
-Personal portfolio site built with [Astro](https://astro.build) and
-[Tailwind CSS v4](https://tailwindcss.com). Static output, no client framework, ~2 KB of
-inlined JS (theme toggle, mobile menu, scroll reveal).
-
-## ⚠️ Two files you still need to add
-
-Both are optional-by-design: the site hides the related UI until the file exists, so it
-never ships a broken link. `npm run build` prints a warning naming anything missing.
-
-| File                | What it enables                                              |
-| ------------------- | ------------------------------------------------------------ |
-| `public/avatar.jpg` | Headshot in the hero, plus the `og:image` used in link previews |
-| `public/resume.pdf` | The "Resume" download buttons in the hero and Contact section |
-
-Drop them in with exactly those names and rebuild — no code changes needed. Or let the
-helper script do it, which also converts a PNG/WebP headshot to JPEG and refuses files whose
-contents don't match their extension:
-
-```powershell
-# pick from a list of likely files in Downloads / Desktop / Pictures / Documents
-.\scripts\add-assets.ps1
-
-# or point it straight at them
-.\scripts\add-assets.ps1 -Photo "$HOME\Downloads\headshot.jpg" -Resume "$HOME\Downloads\Brooke_A_Mendez.pdf"
-```
+Personal portfolio for a senior e-commerce engineer. Built with
+[Astro](https://astro.build) and [Tailwind CSS v4](https://tailwindcss.com) — static
+output, no client framework, a couple of KB of inlined JS for the theme toggle,
+mobile menu, scroll-spy nav, and reading progress.
 
 ## Commands
 
-| Command           | Action                                |
-| ----------------- | ------------------------------------- |
-| `npm install`     | Install dependencies                  |
-| `npm run dev`     | Dev server at `http://localhost:4321` |
-| `npm run build`   | Build the static site to `./dist/`    |
-| `npm run preview` | Preview the production build          |
-| `npm run check`   | Type-check all Astro/TS files         |
+| Command                    | Action                                              |
+| -------------------------- | --------------------------------------------------- |
+| `npm install`              | Install dependencies                                |
+| `npm run dev`              | Dev server at `http://127.0.0.1:4321`               |
+| `npm run build`            | Build the static site to `./dist/`                  |
+| `npm run preview`          | Preview the production build                        |
+| `npm run check`            | Type-check every Astro and TS file                  |
+| `npm run optimize:avatar`  | Re-crop `public/avatar.jpg` after replacing it      |
+| `npm run capture:projects` | Re-screenshot every project storefront              |
+| `npm run fetch:fonts`      | Re-download the self-hosted webfonts                |
 
 ## Editing content
 
-**All site content lives in [`src/data/profile.ts`](src/data/profile.ts).** That's the only
-file you need to touch — identity, about, experience, projects, skills, education,
-certifications, and social links.
+**All site content lives in [`src/data/profile.ts`](src/data/profile.ts)** — identity,
+about, experience, projects, skills, education, and social links. Nothing else needs
+touching for a content change.
 
 Conventions worth knowing:
 
-- **Sections auto-hide.** Empty an array (`export const projects = []`) and both the section
-  and its nav link disappear. No other edits needed.
-- **`end: 'Present'`** marks a role as current; it also feeds `worksFor` in the page's
-  structured data.
-- **`variant: 'break'`** renders a muted, minimal timeline entry — used for the 2023–2025
-  career break so the gap reads as intentional rather than unexplained.
-- **`featured: true`** makes a project card span full width and sort first. Dusty's Trail and
-  Mystiqare are featured.
-- **`metrics`** on a project renders the stat row (`+14%` / `add-to-cart activity`). Three
-  metrics fit a featured card, two fit a half-width one.
-- **`profile.phone`** is `null` on purpose — a phone number on a public page attracts
-  scrapers and cold calls. Set it to `'321-615-1737'` to show it in Contact.
+- **Sections auto-hide.** Empty an array (`export const projects = []`) and both the
+  section and its nav link disappear.
+- **`experience` must stay newest-first** — it renders as a reverse-chronological
+  timeline, and the career break sits in its true date position rather than at the end,
+  so the gap reads as part of the sequence.
+- **`end: 'Present'`** marks a role current and feeds `worksFor` in the page's schema.
+- **`metrics`** on a project renders the outcome row (`+14%` / `add-to-cart activity`).
+  Three fit across; two also lay out cleanly.
+- **`profile.address`** is the structured form of `profile.location`. Both exist so the
+  visible text and the machine-readable schema can never drift apart.
 
-## Before deploying
+### Replacing the photo or resume
 
-Set `site` in [`astro.config.mjs`](astro.config.mjs) to your real domain. It drives the
-canonical URL and the Open Graph tags, both of which are currently pointing at a
-placeholder domain.
+Drop the files in as `public/avatar.jpg` and `public/resume.pdf`, or run
+`scripts/add-assets.ps1`, which finds them, converts a PNG or WebP headshot to JPEG,
+and refuses files whose contents do not match their extension.
+
+After a new photo, run `npm run optimize:avatar`. It crops square around a named focal
+point (`FOCUS`, `FRAME`, `PLACE_Y` at the top of the script) — sharp's built-in `top`
+anchor only positions vertically, which leaves an off-centre face in a round frame.
+
+Both assets are optional by design: [`src/lib/assets.ts`](src/lib/assets.ts) checks at
+build time and hides the photo or the download buttons rather than shipping a 404. The
+build prints a warning naming anything missing.
 
 ## Deploying
 
-`dist/` is plain static files — any host works.
+`dist/` is plain static files, so any static host works. The repo is set up for
+Netlify: [`netlify.toml`](netlify.toml) already carries the build command, publish
+directory, Node version, and cache headers, so nothing needs typing into a dashboard.
 
-- **Netlify** — connect the repo, build command `npm run build`, publish directory `dist`.
-- **Vercel** — connect the repo; the Astro preset is detected automatically.
-- **GitHub Pages** — set `site` to `https://<user>.github.io` and add `base: '/<repo>'` in
-  `astro.config.mjs`, then publish `dist/` via GitHub Actions.
+**Netlify** — netlify.com → *Add new site* → *Import an existing project* → GitHub →
+pick this repo → Deploy. Every `git push` to `main` rebuilds and republishes.
+
+**Vercel** — vercel.com → *Add New Project* → import this repo. The Astro preset is
+detected automatically; `netlify.toml` is ignored.
+
+**GitHub Pages** — workable but fiddlier: a project site is served from
+`/<repo>/` rather than the domain root, so every root-relative asset path
+(`/fonts/…`, `/avatar.jpg`, `/projects/…`) needs a base prefix. Prefer a host that
+serves at the root, or name the repo `<user>.github.io`.
+
+### The canonical URL
+
+`site` in [`astro.config.mjs`](astro.config.mjs) is resolved from the environment
+rather than hard-coded, because a stale value there is invisible locally and only
+shows up as broken link previews after launch:
+
+| Variable           | Set by                                  |
+| ------------------ | --------------------------------------- |
+| `SITE_URL`         | you — overrides everything               |
+| `URL`              | Netlify, the site's primary address     |
+| `DEPLOY_PRIME_URL` | Netlify, on branch and preview deploys  |
+
+Falling back to `http://localhost:4321` for local builds.
+
+Attaching a custom domain later needs no code change: add it in the host's dashboard
+and `URL` updates itself. Only set `SITE_URL` if you need to force a specific value.
 
 ## Structure
 
@@ -78,32 +91,58 @@ placeholder domain.
 src/
 ├── data/profile.ts        all content
 ├── lib/assets.ts          build-time guard for optional /public files
-├── layouts/Base.astro     <head>, SEO/OG tags, theme bootstrap, scroll reveal
+├── layouts/Base.astro     head, SEO/OG tags, theme bootstrap, reveal, progress bar
 ├── components/
-│   ├── Header.astro       sticky nav, theme toggle, mobile menu
-│   ├── Hero.astro         photo, name, headline, CTAs, socials
-│   ├── Section.astro      shared section shell (eyebrow + title + lede)
+│   ├── Sidebar.astro      sticky identity panel, scroll-spy nav, CTAs, socials
+│   ├── Header.astro       mobile-only bar: wordmark, theme toggle, menu
+│   ├── Section.astro      shared section shell (serif title + gilded rule + lede)
 │   ├── About.astro
-│   ├── Experience.astro   timeline, incl. project links and career break
-│   ├── Projects.astro     cards with metric rows and live site links
+│   ├── Experience.astro   timeline, incl. project links and the career break
+│   ├── Projects.astro     cards with storefront thumbnails and outcome metrics
 │   ├── Skills.astro       grouped tags + certifications
 │   ├── Education.astro
 │   ├── Contact.astro
 │   ├── Footer.astro
 │   └── Icon.astro         inline SVG set
 ├── pages/index.astro      section order + JSON-LD Person schema
-└── styles/global.css      design tokens, light/dark, motion prefs
+└── styles/global.css      tokens, type system, materiality, motion prefs
+
+scripts/
+├── add-assets.ps1         install a photo and resume into public/
+├── optimize-avatar.mjs    square focal-point crop, retina-sized
+├── capture-projects.mjs   storefront screenshots over the Chrome DevTools Protocol
+└── fetch-fonts.mjs        download the webfonts and print their @font-face rules
 ```
 
 ## Design notes
 
-- Theme tokens are CSS custom properties defined once in `global.css` (`--surface`, `--text`,
-  `--border`, `--accent`). Dark mode redefines only those variables under `.dark`, so
-  components never carry per-theme classes.
-- The theme resolves in an inline `<head>` script before first paint — no flash. It follows
-  `prefers-color-scheme` until the user explicitly toggles, then remembers the choice.
-- Scroll-reveal is progressive enhancement: both `.no-js` and `prefers-reduced-motion` render
-  everything visible immediately.
-- `vite` is pinned via `overrides` in `package.json` to match the copy Astro uses. Without it,
-  `@tailwindcss/vite` pulls a second, newer Vite and the two `Plugin` types conflict under
-  `astro check`.
+**Layout.** Two columns from `lg` up: a sticky identity sidebar (30%, capped at 26rem)
+beside a scrolling content track. Below `lg` they stack, with the sidebar becoming the
+hero and the nav moving into the mobile menu.
+
+**Type.** Cormorant Garamond for display, Jost for text, monospace retained for
+technical tags. Self-hosted, latin subset only, three weights — around 114 KB versus the
+380 KB Google serves across all subsets, and no third-party request on the critical path.
+
+**Colour.** Warm porcelain and espresso grounds with a champagne-bronze accent. The
+neutral ramp is warmed toward the accent; pure grey beside a warm accent reads cold.
+Dark mode redefines only the tokens, so no component carries a per-theme class.
+
+**Two border weights.** `--border` for card edges and tag pills, `--rule` a step
+stronger for section dividers. At a single weight the section breaks were invisible
+against the ground and one section ran into the next.
+
+**Measure.** `.measure` caps running text at 74 characters. The shell is deliberately
+wide so grids and cards can use the screen, but prose past ~75 characters is tiring.
+
+**Motion** is transform- and opacity-only, both scroll handlers throttled to one check
+per animation frame. Everything is disabled under `prefers-reduced-motion`, and the
+staggered entrance has a no-JS fallback so content can never be left invisible.
+
+**Nav highlight** uses a scroll listener rather than an `IntersectionObserver`. The
+observer stops firing near the page bottom, and a "last section past the reading line"
+rule can never select the final section — the page runs out of scroll first.
+
+**Build.** `vite` is pinned via `overrides` in `package.json` to match the copy Astro
+uses; without it `@tailwindcss/vite` pulls a second, newer Vite and the two `Plugin`
+types conflict under `astro check`.
