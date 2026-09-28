@@ -12,7 +12,7 @@ const ordered = [...projects].sort(
 <Section
   id="projects"
   title="Projects"
-  lede="Storefronts I've built and improved, with the results they moved."
+  lede="Selected work, with the results it moved."
 >
   <div class="grid gap-4">
     {
@@ -43,7 +43,7 @@ const ordered = [...projects].sort(
               {/* Fixed 4:3 frame. Left to their natural heights the thumbnails
                   drifted out of step, because auto-trimming dead space at capture
                   time leaves each screenshot a different aspect ratio.
-                  object-top keeps each storefront's header and hero in view. */}
+                  object-top keeps the top of each screenshot in view. */}
               {project.image && (
                 <a
                   href={href}
@@ -54,7 +54,7 @@ const ordered = [...projects].sort(
                 >
                   <img
                     src={project.image}
-                    alt={`Screenshot of the ${project.name} storefront`}
+                    alt={`Screenshot of ${project.name}`}
                     width="1000"
                     height="750"
                     loading="lazy"

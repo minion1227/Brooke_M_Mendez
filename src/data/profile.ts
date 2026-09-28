@@ -50,7 +50,7 @@ export type Project = {
   /** Shown as the company/context the work happened under. */
   context?: string;
   /**
-   * Storefront screenshot under /public. Regenerate them all with
+   * Screenshot of the project's site under /public. Regenerate them all with
    * `npm run capture:projects`. Omit to render the card without an image.
    */
   image?: string;
@@ -81,23 +81,22 @@ export type Certification = {
 
 export const profile = {
   name: 'Brooke A. Mendez',
-  headline: 'Senior E-commerce Expert & Shopify Developer',
+  headline: 'Senior Data Scientist & Machine Learning Engineer',
   /** Shown in the Contact section beside the pin icon. */
-  location: '616 Clearwater Park Rd, West Palm Beach, FL 32935',
+  location: 'West Palm Beach, FL 32935',
   /**
    * Structured form of the same address, used for the page's Person schema.
    * Kept in one place so the visible address and the machine-readable one can
    * never drift apart -- the schema previously hard-coded a different city.
    */
   address: {
-    street: '616 Clearwater Park Rd',
     locality: 'West Palm Beach',
     region: 'FL',
     postalCode: '32935',
     country: 'US',
   },
   tagline:
-    'E-commerce developer with 10+ years building and improving online stores across Shopify, BigCommerce, WooCommerce, and Adobe Commerce. Strong in storefront development, merchandising, integrations, and conversion work — with Shopify as the core focus.',
+    'Data scientist and ML engineer with 8+ years building data products, predictive models, Generative AI applications, and production analytics systems — from data preparation and feature engineering through evaluation, deployment, and monitoring.',
   email: 'dezmenbro@outlook.com',
   /** Shown in the Contact section as a tel: link. Set to null to hide it. */
   phone: '+1(321)-615-1737' as string | null,
@@ -109,7 +108,7 @@ export const profile = {
   /** Save your headshot as public/avatar.jpg. Hidden until the file exists. */
   avatar: '/avatar.jpg' as string | null,
   seoDescription:
-    'Brooke A. Mendez — Senior E-commerce Expert and Shopify Developer with 10+ years across Shopify, BigCommerce, WooCommerce, and Adobe Commerce. Storefront development, merchandising, integrations, and CRO.',
+    'Brooke A. Mendez — Senior Data Scientist and Machine Learning Engineer with 8+ years building data products, predictive models, Generative AI and RAG applications, and production analytics systems with Python, SQL, Spark, Databricks, and AWS.',
 };
 
 export const socials: Social[] = [
@@ -120,9 +119,9 @@ export const socials: Social[] = [
 /* ── About ─────────────────────────────────────────────────────────────── */
 
 export const about: string[] = [
-  'I’m an e-commerce developer with over ten years of experience building and improving online stores. Most of that time has been spent in Shopify — themes, Liquid, storefront architecture, and the APIs behind them — alongside steady work across BigCommerce, WooCommerce, and Adobe Commerce.',
-  'What I enjoy most is the part of the job that sits between engineering and the business: figuring out why a product page isn’t converting, making a complex configurator feel simple, connecting content to the products it should be selling, and giving marketing teams components they can ship campaigns with on their own.',
-  'I like to keep things practical — understand what really needs to be solved, build it cleanly, and make sure the result is something the business can rely on and grow with. Across recent projects that has meant measurable movement in add-to-cart rate, average order value, and product-page abandonment.',
+  'I’m a data scientist and machine learning engineer with more than eight years of experience building data products, predictive models, Generative AI applications, and production analytics systems. My day-to-day tools are Python, SQL, Spark, Databricks, and AWS, with Scikit-learn, TensorFlow, and LangChain on the modeling side.',
+  'Most of my recent work is in Generative AI: LLM applications built on retrieval-augmented generation, semantic search, and embeddings, and the evaluation work behind them — improving retrieval quality, response quality, and latency. Before that I built predictive models for government and enterprise AI platforms, Snowflake and AWS data pipelines for business intelligence, and product analytics for feature launches.',
+  'I work across the full ML lifecycle — from data preparation and feature engineering through evaluation, deployment, and monitoring — and care just as much about the stakeholder-facing analytics that make a model useful to the people relying on it.',
 ];
 
 /* ── Experience ────────────────────────────────────────────────────────── */
@@ -134,84 +133,85 @@ export const about: string[] = [
  */
 export const experience: Experience[] = [
   {
-    company: 'NorthPeak Commerce Labs',
-    role: 'Senior E-commerce Expert',
-    start: 'Nov 2025',
+    company: 'Allwyn Corporation',
+    role: 'Senior Data Scientist',
+    start: 'Nov 2024',
     end: 'Present',
-    location: 'Portland, OR',
+    location: 'Arlington, VA',
     type: 'Remote',
-    project: { name: 'Dusty’s Trail', href: 'https://dustystrail.com' },
-    summary:
-      'Lead the e-commerce work for Dusty’s Trail, covering Shopify development, storefront UX, merchandising, bundles, recipes, promotions, and ongoing optimization.',
+    project: {
+      name: 'Generative AI Bot for Citizen Services — Allwyn Digital Modernization Platform',
+      href: 'https://allwyncorp.com',
+    },
     highlights: [
-      'Simplified how products and bundles are presented, helping add-to-cart activity grow by roughly 14%.',
-      'Connected recipe content more naturally with related products — visitors began spending about 18% longer on the site.',
-      'Fine-tuned mobile navigation, recommendations, cart messaging, and promotional flows, contributing to an estimated 9% lift in average order value.',
-      'Support broader commerce work across WooCommerce and Adobe Commerce, including catalog updates, frontend fixes, integrations, and platform-specific troubleshooting.',
+      'Developed LLM-powered citizen-service applications using RAG and LangChain, reducing manual knowledge-retrieval effort by 8% and improving response time by 6%.',
+      'Built semantic-search and NLP pipelines for question answering, document summarization, and conversational AI using embedding models and vector-search workflows.',
+      'Designed Python, Spark, Databricks, and AWS pipelines processing approximately 500 GB of structured and unstructured data per day for downstream analytics and AI workflows.',
+      'Evaluated and tuned retrieval and LLM application quality through prompt iteration, vector-search optimization, semantic relevance checks, and evaluation frameworks, achieving 4.5% lower latency and 12% higher measured accuracy.',
+      'Partnered with engineering and product teams to deploy production-grade AI services and improve reliability, automation, and end-user support workflows.',
     ],
-    tech: ['Shopify', 'Liquid', 'Merchandising', 'CRO', 'WooCommerce', 'Adobe Commerce'],
+    tech: ['LLMs', 'RAG', 'LangChain', 'Semantic Search', 'LLM Evaluation', 'Databricks', 'AWS'],
   },
   {
     company: 'Career break',
     role: 'Career break',
     start: 'Jan 2023',
-    end: 'Oct 2025',
+    end: 'Oct 2024',
     summary:
-      'Took time away from full-time work before returning to e-commerce in late 2025.',
+      'Took time away from full-time work before returning to data science in late 2024.',
     variant: 'break',
   },
   {
-    company: 'Fiverr & Independent Clients',
-    role: 'Freelance Shopify Expert',
+    company: 'Cardinality.ai',
+    role: 'Senior Data Scientist',
     start: 'Mar 2020',
     end: 'Dec 2022',
-    type: 'Remote · Freelance',
-    project: { name: 'Mystiqare', href: 'https://mystiqare.com' },
-    summary:
-      'Worked directly with clients on Shopify builds and improvements, managing projects end to end — from requirements and estimates through development, QA, launch, and follow-up support.',
+    location: 'Gaithersburg, MD',
+    type: 'Remote',
+    project: { name: 'Embedded AI & Intelligence Platform', href: 'https://prnewswire.com' },
     highlights: [
-      'Reworked Mystiqare product pages around benefits, ingredients, routines, and related products, helping recommendation engagement rise by roughly 16%.',
-      'Made the Beauty Passport / MystiCoins loyalty experience easier to find and use, supporting about 12% more repeat-customer engagement.',
-      'Delivered bundles, promotions, reviews, and loyalty features alongside ongoing Shopify improvements.',
-      'Handled smaller WooCommerce projects and migrations — theme updates, checkout fixes, plugin setup, and product imports.',
+      'Developed predictive analytics and machine-learning models for government AI platforms using Python, SQL, and Scikit-learn, improving prediction accuracy by 7% over baseline models.',
+      'Built scalable ETL pipelines and automated data workflows for large structured and unstructured datasets supporting analytics and model development.',
+      'Applied NLP, statistical analysis, feature engineering, cross-validation, and model evaluation techniques to improve operational intelligence and citizen-outcome predictions.',
+      'Designed Tableau and Power BI dashboards for KPI tracking, real-time analytics, and executive reporting.',
+      'Deployed cloud-based ML solutions using AWS, Docker, Airflow, Snowflake, and Kubernetes to improve portability, scalability, and production reliability.',
     ],
-    tech: ['Shopify', 'Liquid', 'Loyalty', 'Bundles', 'WooCommerce', 'Migrations'],
+    tech: ['Python', 'SQL', 'Scikit-learn', 'NLP', 'Snowflake', 'Airflow', 'Docker', 'Kubernetes'],
   },
   {
-    company: 'DigitalSuits',
-    role: 'Shopify / E-commerce Developer',
+    company: 'Hypergiant Industries',
+    role: 'Machine Learning Engineer',
     start: 'Jan 2018',
     end: 'Feb 2020',
-    location: 'Miami, FL',
+    location: 'Austin, TX',
     type: 'Remote',
-    project: { name: 'EASURE Scrubs', href: 'https://easurescrubs.com' },
-    summary:
-      'Worked across EASURE’s Shopify store, improving product pages, collections, promotions, and mobile shopping flows.',
+    project: { name: 'Hypergiant CommandCenter Platform', href: 'https://hypergiant.com' },
     highlights: [
-      'Made sizing, variants, and fabric details easier to understand, helping product-page abandonment fall by around 12%.',
-      'Built reusable Liquid sections for campaigns, allowing the marketing team to publish updates roughly 35% faster.',
-      'Improved content and mobile shopping flows, contributing to an estimated 9% increase in conversion on optimized journeys.',
-      'Supported selected Magento / Adobe Commerce and WooCommerce accounts with catalog work, frontend updates, integrations, and maintenance.',
+      'Developed predictive analytics and machine-learning models for enterprise AI applications using Python and Scikit-learn.',
+      'Analyzed large-scale structured and unstructured datasets, performed feature engineering, and translated model outputs into operational business insights.',
+      'Built automated ETL pipelines and data workflows using SQL, Airflow, and cloud analytics tools, reducing manual reporting effort by 3%.',
+      'Developed Snowflake data models and AWS ingestion pipelines using S3 and Redshift to support scalable business-intelligence reporting.',
+      'Managed Docker-based data services and Kubernetes workloads for analytics applications and created dashboards for real-time operational monitoring.',
     ],
-    tech: ['Shopify', 'Liquid', 'Responsive UI', 'Magento', 'WooCommerce', 'CRO'],
+    tech: ['Python', 'Scikit-learn', 'SQL', 'Airflow', 'Snowflake', 'AWS', 'Docker', 'Kubernetes'],
   },
   {
-    company: 'Trellis',
-    role: 'BigCommerce Developer',
+    company: 'Airtable',
+    role: 'Data Analyst',
     start: 'Jun 2015',
     end: 'Dec 2017',
-    location: 'Boston, MA',
+    location: 'San Francisco, CA',
     type: 'Remote',
-    project: { name: 'Perdido Hat Co.', href: 'https://perdidohatco.com' },
-    summary:
-      'Built and maintained responsive e-commerce storefronts across product pages, collections, navigation, cart flows, and promotional content.',
+    project: {
+      name: 'Airtable Product Usage & Feature Adoption Analytics',
+      href: 'https://airtable.com',
+    },
     highlights: [
-      'Worked with BigCommerce Stencil, Handlebars, JavaScript, HTML, and CSS to create reusable storefront components.',
-      'Made custom-product options easier to understand, helping customer inquiries rise by roughly 17%.',
-      'Improved catalog structure and mobile browsing, helping shoppers view around 13% more products per session.',
-      'Supported early WooCommerce and Magento storefront work — theme customization, catalog updates, and frontend troubleshooting.',
+      'Analyzed user-interaction data for the Gallery View and Kanban View feature launches to identify product-adoption and engagement trends.',
+      'Built SQL dashboards to monitor feature adoption, retention, engagement, and workflow-usage metrics.',
+      'Performed exploratory data analysis using Python and Tableau and delivered KPI reports and analytical insights to product and business teams.',
     ],
-    tech: ['BigCommerce', 'Stencil', 'Handlebars', 'JavaScript', 'HTML5', 'CSS3'],
+    tech: ['SQL', 'Python', 'Tableau', 'EDA', 'Product Analytics'],
   },
 ];
 
@@ -220,13 +220,24 @@ export const experience: Experience[] = [
 export const education: Education[] = [
   {
     school: 'Florida Institute of Technology',
+    degree: 'Master of Science',
+    field: 'Data Science',
+    start: 'Sep 2015',
+    end: 'Mar 2018',
+    location: 'Melbourne, FL',
+    details: [
+      'Relevant coursework: Machine Learning, Data Mining, Statistics, Database Systems, Artificial Intelligence, Data Analytics, Predictive Modeling, and Software Engineering.',
+    ],
+  },
+  {
+    school: 'Florida Institute of Technology',
     degree: 'Bachelor of Science',
     field: 'Information Systems',
     start: 'Aug 2011',
     end: 'May 2015',
     location: 'Melbourne, FL',
     details: [
-      'Relevant studies: Web Development, Database Systems, E-commerce, Systems Analysis, Business Information Systems, and UX Design.',
+      'Relevant coursework: Database Systems, Programming, Statistics, Systems Analysis, Business Information Systems, Data Management, and Web Development.',
     ],
   },
 ];
@@ -235,76 +246,67 @@ export const education: Education[] = [
 
 export const projects: Project[] = [
   {
-    name: 'Dusty’s Trail',
-    context: 'NorthPeak Commerce Labs',
-    image: '/projects/dustys-trail.jpg',
-    href: 'https://dustystrail.com',
+    name: 'Generative AI Bot for Citizen Services',
+    context: 'Allwyn Corporation',
+    image: '/projects/allwyn.jpg',
+    href: 'https://allwyncorp.com',
     blurb:
-      'Shopify storefront where recipe content drives product discovery — bundles, merchandising, and mobile-first shopping flows.',
+      'RAG-based question answering, summarization, and semantic search for citizen-service support workflows, tuned through prompt optimization and LLM and retrieval evaluation.',
     description:
-      'I lead the e-commerce work on Dusty’s Trail: Shopify development, storefront UX, merchandising, bundles, recipes, promotions, and ongoing optimization. Simplifying how products and bundles are presented lifted add-to-cart activity, while connecting recipe content more naturally to related products kept visitors on site noticeably longer. Fine-tuning mobile navigation, recommendations, cart messaging, and promotional flows moved average order value.',
-    year: '2025 — Present',
-    tags: ['Shopify', 'Liquid', 'Bundles', 'Merchandising', 'Mobile UX', 'CRO'],
+      'Part of the Allwyn Digital Modernization Platform. I built LLM-powered applications with RAG and LangChain, semantic-search and NLP pipelines for question answering and document summarization, and the Python / Spark / Databricks / AWS pipelines that process roughly 500 GB of structured and unstructured data a day. Prompt iteration, vector-search optimization, semantic relevance checks, and evaluation frameworks raised measured accuracy while cutting latency.',
+    year: '2024 — Present',
+    tags: ['LLMs', 'RAG', 'LangChain', 'Semantic Search', 'LLM Evaluation', 'Databricks', 'AWS'],
     metrics: [
-      { value: '+14%', label: 'add-to-cart activity' },
-      { value: '+18%', label: 'time on site' },
-      { value: '+9%', label: 'average order value' },
+      { value: '+12%', label: 'retrieval & LLM accuracy' },
+      { value: '−8%', label: 'manual knowledge-retrieval effort' },
+      { value: '~500 GB', label: 'data processed per day' },
     ],
-    links: [{ label: 'dustystrail.com', href: 'https://dustystrail.com' }],
+    links: [{ label: 'allwyncorp.com', href: 'https://allwyncorp.com' }],
     featured: true,
   },
   {
-    name: 'Mystiqare',
-    context: 'Freelance',
-    image: '/projects/mystiqare.jpg',
-    href: 'https://mystiqare.com',
+    name: 'Embedded AI & Intelligence Platform',
+    context: 'Cardinality.ai',
+    image: '/projects/cardinality.jpg',
+    href: 'https://prnewswire.com',
     blurb:
-      'Shopify skincare experience built around routines, ingredient education, and a points-based loyalty program.',
+      'Government predictive intelligence — Python and SQL machine-learning workflows combining structured and unstructured data, NLP, and executive BI reporting.',
     description:
-      'Reworked product pages around benefits, ingredients, routines, and related products, which lifted recommendation engagement. Made the Beauty Passport / MystiCoins loyalty experience easier to find and use, supporting more repeat-customer engagement. Also delivered bundles, promotions, and reviews alongside ongoing Shopify improvements.',
+      'Built predictive models with Python, SQL, and Scikit-learn that beat baseline accuracy, using NLP, statistical analysis, feature engineering, cross-validation, and model evaluation to improve citizen-outcome predictions. Built the ETL pipelines and automated workflows behind them, delivered Tableau and Power BI dashboards for KPI tracking and executive reporting, and deployed the work with AWS, Docker, Airflow, Snowflake, and Kubernetes.',
     year: '2020 — 2022',
-    tags: ['Shopify', 'Liquid', 'Loyalty', 'Bundles', 'Reviews', 'Promotions'],
+    tags: ['Predictive Analytics', 'Scikit-learn', 'NLP', 'Feature Engineering', 'Power BI', 'Snowflake'],
     metrics: [
-      { value: '+16%', label: 'recommendation engagement' },
-      { value: '+12%', label: 'repeat-customer engagement' },
+      { value: '+7%', label: 'prediction accuracy over baseline' },
     ],
-    links: [{ label: 'mystiqare.com', href: 'https://mystiqare.com' }],
+    links: [{ label: 'prnewswire.com', href: 'https://prnewswire.com' }],
     featured: true,
   },
   {
-    name: 'EASURE Scrubs',
-    context: 'DigitalSuits',
-    image: '/projects/easure-scrubs.jpg',
-    href: 'https://easurescrubs.com',
+    name: 'Hypergiant CommandCenter Platform',
+    context: 'Hypergiant Industries',
+    image: '/projects/hypergiant.jpg',
+    href: 'https://hypergiant.com',
     blurb:
-      'Medical apparel storefront — clearer sizing and variants, plus a reusable section library for campaigns.',
+      'Enterprise analytics platform — ML-driven analytics on Snowflake data models, with AWS S3 and Redshift ingestion, Airflow orchestration, and containerized services on Kubernetes.',
     description:
-      'Improved product pages, collections, promotions, and mobile shopping flows. Making sizing, variants, and fabric details easier to understand brought product-page abandonment down, and reusable Liquid sections let the marketing team publish campaign updates substantially faster.',
+      'Developed predictive models with Python and Scikit-learn, performed feature engineering, and translated model outputs into operational business insights. Built the data layer behind them — automated ETL workflows with SQL and Airflow, Snowflake data models, and AWS ingestion pipelines on S3 and Redshift for business-intelligence reporting — and ran the analytics services on Docker and Kubernetes, with dashboards for real-time operational monitoring.',
     year: '2018 — 2020',
-    tags: ['Shopify', 'Liquid', 'Variants', 'Sections', 'Responsive UI'],
-    metrics: [
-      { value: '−12%', label: 'product-page abandonment' },
-      { value: '+35%', label: 'faster campaign publishing' },
-      { value: '+9%', label: 'conversion on optimized journeys' },
-    ],
-    links: [{ label: 'easurescrubs.com', href: 'https://easurescrubs.com' }],
+    tags: ['Predictive Analytics', 'Scikit-learn', 'Airflow', 'Snowflake', 'AWS Redshift', 'Kubernetes'],
+    metrics: [{ value: '−3%', label: 'manual reporting effort' }],
+    links: [{ label: 'hypergiant.com', href: 'https://hypergiant.com' }],
   },
   {
-    name: 'Perdido Hat Co.',
-    context: 'Trellis',
-    image: '/projects/perdido-hat-co.jpg',
-    href: 'https://perdidohatco.com',
+    name: 'Airtable Product Usage & Feature Adoption Analytics',
+    context: 'Airtable',
+    image: '/projects/airtable.jpg',
+    href: 'https://airtable.com',
     blurb:
-      'BigCommerce storefront for highly configurable custom headwear — embroidery, patches, fabrics, private label.',
+      'Adoption, retention, and engagement analytics for the Gallery View and Kanban View launches.',
     description:
-      'Built responsive storefront components with BigCommerce Stencil and Handlebars. Making custom-product options easier to understand drove a meaningful rise in customer inquiries, and improvements to catalog structure and mobile browsing increased how many products shoppers viewed per session.',
+      'Analyzed user-interaction data to identify product-adoption and engagement trends, built SQL dashboards for feature adoption, retention, and workflow usage, and delivered KPI reports and insights from exploratory analysis in Python and Tableau.',
     year: '2015 — 2017',
-    tags: ['BigCommerce', 'Stencil', 'Handlebars', 'Custom Options', 'Catalog'],
-    metrics: [
-      { value: '+17%', label: 'customer inquiries' },
-      { value: '+13%', label: 'products viewed per session' },
-    ],
-    links: [{ label: 'perdidohatco.com', href: 'https://perdidohatco.com' }],
+    tags: ['SQL', 'Python', 'Tableau', 'EDA', 'KPI Reporting'],
+    links: [{ label: 'airtable.com', href: 'https://airtable.com' }],
   },
 ];
 
@@ -312,80 +314,100 @@ export const projects: Project[] = [
 
 export const skills: SkillGroup[] = [
   {
-    category: 'Platforms',
+    category: 'Programming & Analytics',
+    items: ['Python', 'SQL', 'R', 'Pandas', 'NumPy', 'SciPy', 'Jupyter'],
+  },
+  {
+    category: 'Machine Learning',
     items: [
-      'Shopify',
-      'Shopify Plus',
-      'Shopify 2.0',
-      'BigCommerce',
-      'WooCommerce',
-      'Adobe Commerce / Magento',
+      'Scikit-learn',
+      'TensorFlow',
+      'PyTorch',
+      'XGBoost',
+      'Regression',
+      'Classification',
+      'Clustering',
+      'Random Forest',
+      'Decision Trees',
+      'Neural Networks',
+      'Feature Engineering',
     ],
   },
   {
-    category: 'Frontend',
+    category: 'Generative AI & NLP',
     items: [
-      'Liquid',
-      'Stencil',
-      'Handlebars',
-      'JavaScript',
-      'HTML5',
-      'CSS3',
-      'React',
-      'Responsive UI',
+      'LLMs',
+      'RAG',
+      'Embeddings',
+      'Vector Databases',
+      'Semantic Search',
+      'Prompt Engineering',
+      'OpenAI APIs',
+      'LangChain',
+      'Question Answering',
+      'Document Summarization',
     ],
   },
   {
-    category: 'APIs & Dev',
+    category: 'AI & Model Evaluation',
     items: [
-      'Shopify Admin API',
-      'Storefront API',
-      'BigCommerce APIs',
-      'WooCommerce REST API',
-      'Magento APIs',
-      'Node.js',
+      'LLM Evaluation',
+      'Retrieval Evaluation',
+      'Response Quality Assessment',
+      'Semantic Relevance',
+      'Accuracy/Latency Benchmarking',
+      'Cross-Validation',
+      'Precision',
+      'Recall',
+      'F1',
+      'ROC-AUC',
+      'RMSE',
+      'MAE',
+    ],
+  },
+  {
+    category: 'Data Engineering',
+    items: [
+      'ETL/ELT',
+      'Data Wrangling',
+      'Data Cleaning',
+      'Apache Spark',
+      'Airflow',
+      'Databricks',
+      'Snowflake',
+      'BigQuery',
+      'Data Pipelines',
+    ],
+  },
+  {
+    category: 'Cloud & MLOps',
+    items: [
+      'AWS',
+      'Docker',
+      'Kubernetes',
       'REST APIs',
-      'Custom Integrations',
+      'FastAPI',
+      'Model Deployment',
+      'Model Monitoring',
     ],
   },
   {
-    category: 'Commerce',
+    category: 'Visualization & Databases',
     items: [
-      'Product Merchandising',
-      'Catalog Management',
-      'Collections',
-      'Variants',
-      'Bundles',
-      'Promotions',
-      'Loyalty',
-      'Subscriptions',
-      'CRO',
-      'SEO',
-      'AOV Optimization',
+      'Tableau',
+      'Power BI',
+      'Matplotlib',
+      'Seaborn',
+      'Plotly',
+      'PostgreSQL',
+      'MySQL',
+      'MongoDB',
+      'Redis',
     ],
   },
   {
-    category: 'Tools',
-    items: [
-      'Recharge',
-      'Bold',
-      'PageFly',
-      'Shogun',
-      'GemPages',
-      'Figma',
-      'Adobe XD',
-      'Git',
-      'GitHub',
-    ],
-  },
-  {
-    category: 'Also',
-    items: [
-      'Custom Themes',
-      'Store Migration',
-      'Catalog Architecture',
-      'Performance Optimization',
-    ],
+    category: 'Statistics',
+    items: ['Probability', 'Hypothesis Testing', 'A/B Testing', 'Time Series', 'Hyperparameter Tuning'],
   },
 ];
 

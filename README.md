@@ -1,6 +1,6 @@
 # Portfolio — Brooke A. Mendez
 
-Personal portfolio for a senior e-commerce engineer. Built with
+Personal portfolio for a senior data scientist and machine learning engineer. Built with
 [Astro](https://astro.build) and [Tailwind CSS v4](https://tailwindcss.com) — static
 output, no client framework, a couple of KB of inlined JS for the theme toggle,
 mobile menu, scroll-spy nav, and reading progress.
@@ -15,7 +15,7 @@ mobile menu, scroll-spy nav, and reading progress.
 | `npm run preview`          | Preview the production build                        |
 | `npm run check`            | Type-check every Astro and TS file                  |
 | `npm run optimize:avatar`  | Re-crop `public/avatar.jpg` after replacing it      |
-| `npm run capture:projects` | Re-screenshot every project storefront              |
+| `npm run capture:projects` | Re-screenshot every project site                    |
 | `npm run fetch:fonts`      | Re-download the self-hosted webfonts                |
 
 ## Editing content
@@ -32,7 +32,7 @@ Conventions worth knowing:
   timeline, and the career break sits in its true date position rather than at the end,
   so the gap reads as part of the sequence.
 - **`end: 'Present'`** marks a role current and feeds `worksFor` in the page's schema.
-- **`metrics`** on a project renders the outcome row (`+14%` / `add-to-cart activity`).
+- **`metrics`** on a project renders the outcome row (`+12%` / `retrieval accuracy`).
   Three fit across; two also lay out cleanly.
 - **`profile.address`** is the structured form of `profile.location`. Both exist so the
   visible text and the machine-readable schema can never drift apart.
@@ -98,7 +98,7 @@ src/
 │   ├── Section.astro      shared section shell (serif title + gilded rule + lede)
 │   ├── About.astro
 │   ├── Experience.astro   timeline, incl. project links and the career break
-│   ├── Projects.astro     cards with storefront thumbnails and outcome metrics
+│   ├── Projects.astro     cards with site thumbnails and outcome metrics
 │   ├── Skills.astro       grouped tags + certifications
 │   ├── Education.astro
 │   ├── Contact.astro
@@ -110,7 +110,7 @@ src/
 scripts/
 ├── add-assets.ps1         install a photo and resume into public/
 ├── optimize-avatar.mjs    square focal-point crop, retina-sized
-├── capture-projects.mjs   storefront screenshots over the Chrome DevTools Protocol
+├── capture-projects.mjs   project-site screenshots over the Chrome DevTools Protocol
 └── fetch-fonts.mjs        download the webfonts and print their @font-face rules
 ```
 
