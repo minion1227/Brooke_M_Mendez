@@ -1,15 +1,15 @@
 /**
- * Captures a storefront screenshot for each project, then downsizes it for the
- * web and writes it to public/projects/<slug>.jpg.
+ * Captures a screenshot of each project's site, then downsizes it for the web
+ * and writes it to public/projects/<slug>.jpg.
  *
  * Run:  npm run capture:projects
  *
  * Drives the Chrome or Edge already installed on the machine over the DevTools
  * Protocol -- no Puppeteer, no Chromium download. CDP rather than Chrome's
- * `--screenshot` flag because these are live Shopify storefronts: they open
- * newsletter and cookie modals on load, and `--screenshot` fires the moment the
- * page loads with no chance to dismiss anything. Here we load, wait, clear the
- * overlays, and only then capture.
+ * `--screenshot` flag because these are live sites: they open cookie and
+ * newsletter modals on load, and `--screenshot` fires the moment the page loads
+ * with no chance to dismiss anything. Here we load, wait, clear the overlays,
+ * and only then capture.
  */
 import { spawn } from 'node:child_process';
 import { mkdirSync, existsSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
@@ -25,18 +25,23 @@ const BROWSERS = [
 ];
 
 /**
- * `scrollY` frames the shot lower down the page.
+ * Keep these in step with the `image` and `href` of each project in
+ * src/data/profile.ts.
  *
- * Mystiqare's hero is a <video>, and headless Chrome will not composite a video
- * frame into a screenshot — it stays on a low-res poster no matter how long you
- * wait for it to buffer. Framing on the product grid below shows the storefront
- * honestly instead of shipping what looks like a broken image.
+ * Optional `scrollY` frames the shot lower down the page. Use it when a hero is
+ * a <video>: headless Chrome will not composite a video frame into a screenshot
+ * — it stays on a low-res poster no matter how long you wait for it to buffer —
+ * so framing on the content below beats shipping what looks like a broken image.
+ *
+ * `trim: false` skips trimFlatBottom. Allwyn's dark hero ends in a solid band
+ * that is part of the design; trimming it left a wider image, and the card's
+ * 4:3 frame then cropped the headline off the left edge.
  */
 const TARGETS = [
-  { slug: 'dustys-trail', url: 'https://dustystrail.com' },
-  { slug: 'mystiqare', url: 'https://mystiqare.com', scrollY: 430 },
-  { slug: 'easure-scrubs', url: 'https://easurescrubs.com' },
-  { slug: 'perdido-hat-co', url: 'https://perdidohatco.com' },
+  { slug: 'allwyn', url: 'https://allwyncorp.com', trim: false },
+  { slug: 'cardinality', url: 'https://prnewswire.com' },
+  { slug: 'hypergiant', url: 'https://hypergiant.com' },
+  { slug: 'airtable', url: 'https://airtable.com' },
 ];
 
 // Captured at 1x, wide, then downscaled. Not 2x: at deviceScaleFactor 2 these
@@ -67,7 +72,19 @@ const DISMISS_OVERLAYS = `(() => {
   const vw = innerWidth, vh = innerHeight;
   const removed = [];
 
-  document.querySelectorAll('body *').forEach((el) => {
+  // Walk into shadow roots too: consent managers often render their banner
+  // inside one, where a plain querySelectorAll never reaches -- Airtable's
+  // cookie banner slipped through until this was added.
+  const elements = [];
+  const collect = (root) => {
+    for (const el of root.querySelectorAll('*')) {
+      elements.push(el);
+      if (el.shadowRoot) collect(el.shadowRoot);
+    }
+  };
+  collect(document.body);
+
+  elements.forEach((el) => {
     if (!el.isConnected) return;
     const cs = getComputedStyle(el);
     if (cs.position !== 'fixed' && cs.position !== 'sticky') return;
@@ -306,7 +323,7 @@ const cdp = await CDP.connect(webSocketDebuggerUrl);
 
 let captured = 0;
 
-for (const { slug, url, scrollY = 0 } of TARGETS) {
+for (const { slug, url, scrollY = 0, trim = true } of TARGETS) {
   let targetId;
   try {
     ({ targetId } = await cdp.send('Target.createTarget', { url: 'about:blank' }));
@@ -431,7 +448,7 @@ for (const { slug, url, scrollY = 0 } of TARGETS) {
     );
 
     const input = Buffer.from(data, 'base64');
-    const trimmed = await trimFlatBottom(input);
+    const trimmed = trim ? await trimFlatBottom(input) : input;
 
     const output = await sharp(trimmed)
       .resize(OUTPUT_WIDTH, null, { withoutEnlargement: true })

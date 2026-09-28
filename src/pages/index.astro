@@ -30,7 +30,6 @@ const personSchema = {
   telephone: profile.phone ?? undefined,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: profile.address.street,
     addressLocality: profile.address.locality,
     addressRegion: profile.address.region,
     postalCode: profile.address.postalCode,
