@@ -136,7 +136,7 @@ export const experience: Experience[] = [
     company: 'Allwyn Corporation',
     role: 'Senior Data Scientist',
     start: 'Nov 2024',
-    end: 'Present',
+    end: 'Aug 2026',
     location: 'Arlington, VA',
     type: 'Remote',
     project: {
@@ -253,8 +253,8 @@ export const projects: Project[] = [
     blurb:
       'RAG-based question answering, summarization, and semantic search for citizen-service support workflows, tuned through prompt optimization and LLM and retrieval evaluation.',
     description:
-      'Part of the Allwyn Digital Modernization Platform. I built LLM-powered applications with RAG and LangChain, semantic-search and NLP pipelines for question answering and document summarization, and the Python / Spark / Databricks / AWS pipelines that process roughly 500 GB of structured and unstructured data a day. Prompt iteration, vector-search optimization, semantic relevance checks, and evaluation frameworks raised measured accuracy while cutting latency.',
-    year: '2024 — Present',
+      'Part of the Allwyn Digital Modernization Platform. I built LLM-powered applications with RAG and LangChain, semantic-search and NLP pipelines for question answering and document summarization, and the Python / Spark / Databricks / AWS pipelines that processed roughly 500 GB of structured and unstructured data a day. Prompt iteration, vector-search optimization, semantic relevance checks, and evaluation frameworks raised measured accuracy while cutting latency.',
+    year: '2024 — 2026',
     tags: ['LLMs', 'RAG', 'LangChain', 'Semantic Search', 'LLM Evaluation', 'Databricks', 'AWS'],
     metrics: [
       { value: '+12%', label: 'retrieval & LLM accuracy' },
